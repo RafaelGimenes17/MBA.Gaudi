@@ -1,0 +1,6 @@
+@MBA.Gaudi.Api_HostAddress = http://localhost:5219
+
+GET {{MBA.Gaudi.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
