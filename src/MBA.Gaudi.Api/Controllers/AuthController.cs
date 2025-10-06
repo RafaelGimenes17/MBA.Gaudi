@@ -1,6 +1,4 @@
-﻿using MBA.Gaudi.Core.Data;
-using MBA.Gaudi.Core.Models;
-using MBA.Gaudi.Security;
+﻿using MBA.Gaudi.Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -18,12 +16,12 @@ namespace MBA.Gaudi.Api.Controllers
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly AppDbContext _context;
+        private readonly Security.AppDbContext _context;
         private readonly JwtSettings _jwtSettings;
 
         public AuthController(SignInManager<IdentityUser> signInManager,
                                 UserManager<IdentityUser> userManager,
-                                AppDbContext context,
+                                Security.AppDbContext context,
                                 IOptions<JwtSettings> jwtSettings)
         {
             _signInManager = signInManager;

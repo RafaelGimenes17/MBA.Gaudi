@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MBA.Gaudi.Security.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251006185551_DBStart")]
+    [Migration("20251006190716_DBStart")]
     partial class DBStart
     {
         /// <inheritdoc />
