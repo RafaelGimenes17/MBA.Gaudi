@@ -1,12 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MBA.Gaudi.Core.DomainObjects;
 
 namespace MBA.Gaudi.GestaoAlunos.Domain
 {
-    internal class Matricula
+    public class Matricula : Entity, IAggregateRoot
     {
+        public Matricula() { }
+
+        public Matricula(Guid alunoId, DateTime dataMatricula)
+        {
+            AlunoId = alunoId;
+            DataMatricula = dataMatricula;
+            Ativo = true;
+        }
+
+        public Guid AlunoId { get; private set; }
+        public DateTime DataMatricula { get; private set; }
+        public DateTime DataValidade { get; set; }
+        public bool Ativo { get; private set; }
+
+        public Aluno Aluno { get; set; }
+
+        public void AlteraStatus(bool ativo) => Ativo = ativo;
     }
 }

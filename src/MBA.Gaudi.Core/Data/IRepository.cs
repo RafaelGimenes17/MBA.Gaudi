@@ -1,5 +1,4 @@
-﻿using System;
-using MBA.Gaudi.Core.Models;
+﻿using MBA.Gaudi.Core.DomainObjects;
 
 namespace MBA.Gaudi.Core.Data
 {

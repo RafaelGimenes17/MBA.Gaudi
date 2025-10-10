@@ -1,92 +1,39 @@
-﻿using MBA.Gaudi.Core.Models;
-using MBA.Gaudi.GestaoConteudo.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MBA.Gaudi.Core.DomainObjects;
 
 namespace MBA.Gaudi.GestaoConteudo.Domain
 {
     public class Aula : Entity
     {
-        public string Titulo { get; private set; }
-        public string Descricao { get; private set; }
-        public int DuracaoMinutos { get; private set; }
-        public int Ordem { get; private set; }
-        public DateTime DataCriacao { get; private set; }
-        public bool Ativa { get; private set; }
+        public Aula() { }
 
-        private Aula() { }
-
-        public Aula(string titulo, string descricao, int duracaoMinutos, int ordem)
+        public Aula(string codigo, string titulo, string descricao, int ordem, Guid cursoId)
         {
-            Id = Guid.NewGuid();
+            Codigo = codigo;
             Titulo = titulo;
             Descricao = descricao;
-            DuracaoMinutos = duracaoMinutos;
             Ordem = ordem;
-            DataCriacao = DateTime.UtcNow;
-            Ativa = true;
+            CursoId = cursoId;
 
-            ValidarAula();
+            Ativo = true;
         }
 
-        private void ValidarAula()
-        {
-            if (string.IsNullOrWhiteSpace(Titulo))
-                throw new ArgumentException("Título da aula é obrigatório", nameof(Titulo));
+        public string Codigo { get; private set; }
+        public string Titulo { get; private set; }
+        public string Descricao { get; private set; }
+        public int Ordem { get; private set; }
+        public Guid CursoId { get; private set; }
+        public Curso Curso { get; private set; }
+        public DateTime DataCadastro { get; private set; }
+        public bool Ativo { get; private set; }
 
-            if (string.IsNullOrWhiteSpace(Descricao))
-                throw new ArgumentException("Descrição da aula é obrigatória", nameof(Descricao));
+        public void AlteraStado(bool ativo) => Ativo = ativo;
 
-            if (DuracaoMinutos <= 0)
-                throw new ArgumentException("Duração deve ser maior que zero", nameof(DuracaoMinutos));
+        #region Constants
 
-            if (Ordem <= 0)
-                throw new ArgumentException("Ordem deve ser maior que zero", nameof(Ordem));
-        }
+        public const int CodigoMaxLength = 20;
+        public const int TituloMaxLength = 200;
+        public const int DescricaoMaxLength = 500;
 
-        public void AtualizarTitulo(string novoTitulo)
-        {
-            if (string.IsNullOrWhiteSpace(novoTitulo))
-                throw new ArgumentException("Título da aula é obrigatório", nameof(novoTitulo));
-
-            Titulo = novoTitulo;
-        }
-
-        public void AtualizarDescricao(string novaDescricao)
-        {
-            if (string.IsNullOrWhiteSpace(novaDescricao))
-                throw new ArgumentException("Descrição da aula é obrigatória", nameof(novaDescricao));
-
-            Descricao = novaDescricao;
-        }
-
-        public void AtualizarDuracao(int novaDuracao)
-        {
-            if (novaDuracao <= 0)
-                throw new ArgumentException("Duração deve ser maior que zero", nameof(novaDuracao));
-
-            DuracaoMinutos = novaDuracao;
-        }
-
-        public void AtualizarOrdem(int novaOrdem)
-        {
-            if (novaOrdem <= 0)
-                throw new ArgumentException("Ordem deve ser maior que zero", nameof(novaOrdem));
-
-            Ordem = novaOrdem;
-        }
-
-        public void Inativar()
-        {
-            Ativa = false;
-        }
-
-        public void Ativar()
-        {
-            Ativa = true;
-        }
+        #endregion
     }
 }

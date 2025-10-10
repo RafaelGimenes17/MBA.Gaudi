@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+    
+
+  <ItemGroup>
+    <ProjectReference Include="..\MBA.Gaudi.Core\MBA.Gaudi.Core.csproj" />
+    <ProjectReference Include="..\MBA.Gaudi.GestaoAlunos.Application.Data\MBA.Gaudi.GestaoAlunos.Data.csproj" />
+    <ProjectReference Include="..\MBA.Gaudi.GestaoAlunos.Domain\MBA.Gaudi.GestaoAlunos.Domain.csproj" />
+    <ProjectReference Include="..\MBA.Gaudi.GestaoConteudo.Domain\MBA.Gaudi.GestaoConteudo.Domain.csproj" />
+    <ProjectReference Include="..\MBA.Gaudi.GestaoConteudo\MBA.Gaudi.GestaoConteudo.Data.csproj" />
+    <ProjectReference Include="..\MBA.Gaudi.Security\MBA.Gaudi.Security.csproj" />
+  </ItemGroup>
+
+</Project>

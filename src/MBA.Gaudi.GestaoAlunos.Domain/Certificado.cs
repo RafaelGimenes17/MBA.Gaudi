@@ -1,12 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MBA.Gaudi.Core.DomainObjects;
 
 namespace MBA.Gaudi.GestaoAlunos.Domain
 {
-    internal class Certificado
+    public class Certificado : Entity
     {
+        public Certificado() { }
+
+        public Certificado(Guid alunoId, Guid cursoId, DateTime dataEmissao, string codigo)
+        {
+            AlunoId = alunoId;
+            CursoId = cursoId;
+            DataEmissao = dataEmissao;
+            Codigo = codigo;
+        }
+
+        public Guid AlunoId { get; private set; }
+        public Guid CursoId { get; private set; }
+        public DateTime DataEmissao { get; private set; }
+        public string Codigo { get; private set; }
+
+        public Aluno Aluno { get; set; }
+
+        #region Constants
+        public const int CodigoMaxLength = 20;
+        #endregion
+
     }
 }

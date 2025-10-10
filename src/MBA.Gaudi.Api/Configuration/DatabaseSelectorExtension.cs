@@ -1,5 +1,4 @@
-﻿using MBA.Gaudi.Core.Data;
-using MBA.Gaudi.Security;
+﻿using MBA.Gaudi.Security.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace MBA.Gaudi.Api.Configuration
@@ -10,12 +9,12 @@ namespace MBA.Gaudi.Api.Configuration
         {
             if (builder.Environment.IsDevelopment())
             {
-                builder.Services.AddDbContext<AppDbContext>(options =>
+                builder.Services.AddDbContext<SecurityDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnectionLite")));
             }
             else
             {
-                builder.Services.AddDbContext<AppDbContext>(options =>
+                builder.Services.AddDbContext<SecurityDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             }
 

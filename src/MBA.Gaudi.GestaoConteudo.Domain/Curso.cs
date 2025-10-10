@@ -1,95 +1,60 @@
-﻿using MBA.Gaudi.Core.Models;
-using MBA.Gaudi.GestaoConteudo.Domain.Enums;
-using MBA.Gaudi.GestaoConteudo.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MBA.Gaudi.Core.DomainObjects;
 
 namespace MBA.Gaudi.GestaoConteudo.Domain
 {
     public class Curso : Entity, IAggregateRoot
     {
-        public string Titulo { get; private set; }
+        protected Curso() { }
+
+        public Curso(string nome, string descricao, decimal valor, int cargaHoraria, string publicoAlvo, string objetivo, string requisitos, ConteudoProgramatico conteudoProgramatico)
+        {
+            Nome = nome;
+            Descricao = descricao;
+            Valor = valor;
+            CargaHoraria = cargaHoraria;
+            PublicoAlvo = publicoAlvo;
+            Objetivo = objetivo;
+            Requisitos = requisitos;
+            ConteudoProgramatico = conteudoProgramatico;
+            Ativo = true;
+            Aulas = new List<Aula>();
+        }
+
+        public string Nome { get; private set; }
         public string Descricao { get; private set; }
-        public NivelCurso Nivel { get; private set; }
-        public DateTime DataCriacao { get; private set; }
+        public decimal Valor { get; private set; }
+        public int CargaHoraria { get; private set; }
+        public string PublicoAlvo { get; private set; }
+        public string Objetivo { get; private set; }
+        public string Requisitos { get; private set; }
+        public DateTime DataCadastro { get; private set; }
+        public ConteudoProgramatico ConteudoProgramatico { get; private set; }
         public bool Ativo { get; private set; }
 
-        private readonly List<Aula> _aulas;
-        public IReadOnlyCollection<Aula> Aulas => _aulas.AsReadOnly();
-        private readonly List<ConteudoProgramatico> _conteudosProgramaticos;
-        public IReadOnlyCollection<ConteudoProgramatico> ConteudosProgramaticos => _conteudosProgramaticos.AsReadOnly();
+        public ICollection<Aula> Aulas { get; private set; }
 
-        private Curso()
+        public void AlteraStado(bool ativo) => Ativo = ativo;
+
+        public void AlterarConteudoProgramatico(ConteudoProgramatico conteudoProgramatico)
         {
-            _aulas = new List<Aula>();
-            _conteudosProgramaticos = new List<ConteudoProgramatico>();
+            ConteudoProgramatico = conteudoProgramatico;
         }
 
-        public Curso(string titulo, string descricao, NivelCurso nivel) : this()
+        public void AdicionarAula(Aula aulta)
         {
-            if (string.IsNullOrWhiteSpace(titulo))
-                throw new ArgumentException("Título do curso é obrigatório", nameof(titulo));
-
-            if (string.IsNullOrWhiteSpace(descricao))
-                throw new ArgumentException("Descrição do curso é obrigatória", nameof(descricao));
-
-            if (!Enum.IsDefined(typeof(NivelCurso), nivel))
-                throw new ArgumentException("Nível do curso inválido", nameof(nivel));
-
-            Id = Guid.NewGuid();
-            Titulo = titulo;
-            Descricao = descricao;
-            Nivel = nivel;
-            DataCriacao = DateTime.UtcNow;
-            Ativo = true;
+            Aulas.Add(aulta);
+        }
+        public void RemoverAula(Aula aula)
+        {
+            Aulas.Remove(aula);
         }
 
-        public void AdicionarAula(Aula aula)
-        {
-            if (aula == null)
-                throw new ArgumentNullException(nameof(aula));
-
-            if (!Ativo)
-                throw new InvalidOperationException("Não é possível adicionar aulas a um curso inativo");
-
-            _aulas.Add(aula);
-        }
-
-        public void AdicionarConteudoProgramatico(ConteudoProgramatico conteudo)
-        {
-            if (conteudo == null)
-                throw new ArgumentNullException(nameof(conteudo));
-
-            if (!Ativo)
-                throw new InvalidOperationException("Não é possível adicionar conteúdo programático a um curso inativo");
-
-            _conteudosProgramaticos.Add(conteudo);
-        }
-
-        public bool VerificarSeAulaEstaCadastrada(Guid aulaId)
-        {
-            return _aulas.Any(a => a.Id == aulaId);
-        }
-
-        public void Inativar()
-        {
-            Ativo = false;
-        }
-
-        public void Ativar()
-        {
-            Ativo = true;
-        }
-
-        public void AtualizarNivel(NivelCurso novoNivel)
-        {
-            if (!Enum.IsDefined(typeof(NivelCurso), novoNivel))
-                throw new ArgumentException("Nível do curso inválido", nameof(novoNivel));
-
-            Nivel = novoNivel;
-        }
+        #region Constants
+        public const int NomeMaxLength = 200;
+        public const int DescricaoMaxLength = 1000;
+        public const int PublicoAlvoMaxLength = 300;
+        public const int ObjetivoMaxLength = 500;
+        public const int RequisitosMaxLength = 500;
+        #endregion
     }
 }

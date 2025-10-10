@@ -1,12 +1,14 @@
 using MBA.Gaudi.Api.Configuration;
+using MBA.Gaudi.Ioc.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddDataContextPool();
 builder
     .AddApiConfig()
     .AddCorsConfig()
     .AddSwaggerConfig()
-    .AddDatabaseSelector()
+    //AddDatabaseSelector()
     .AddIdentityConfig();
 
 var app = builder.Build();
@@ -32,6 +34,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseDbMigrationHelper();
+//app.UseDbMigrationHelper();
 
 app.Run();

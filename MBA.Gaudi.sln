@@ -45,6 +45,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBA.Gaudi.GestaoAlunos.Appl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBA.Gaudi.GestaoConteudo.Application", "tests\MBA.Gaudi.GestaoConteudo.Application\MBA.Gaudi.GestaoConteudo.Application.csproj", "{080DDAA8-91F9-4030-80F1-8F2709390451}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-Solution Items", "0-Solution Items", "{5D4E6119-5A38-48DF-AB00-51B66FB9D5AA}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8708813C-62B9-4635-B4D4-3C7292AF5654}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBA.Gaudi.Ioc", "src\MBA.Gaudi.Ioc\MBA.Gaudi.Ioc.csproj", "{B98FCA19-0FA3-4446-BADE-02DE568D181F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +107,10 @@ Global
 		{080DDAA8-91F9-4030-80F1-8F2709390451}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{080DDAA8-91F9-4030-80F1-8F2709390451}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{080DDAA8-91F9-4030-80F1-8F2709390451}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B98FCA19-0FA3-4446-BADE-02DE568D181F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B98FCA19-0FA3-4446-BADE-02DE568D181F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B98FCA19-0FA3-4446-BADE-02DE568D181F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B98FCA19-0FA3-4446-BADE-02DE568D181F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +135,8 @@ Global
 		{D87BD8B6-0016-48DE-B3FB-B60EF047E3B1} = {D7BD0AA9-7A1E-4E72-963D-D5686AFB483B}
 		{1F2B761C-8A02-4EC5-A275-C459757D35D3} = {496CCF3E-1A52-43A5-8B31-AF2FF9620D68}
 		{080DDAA8-91F9-4030-80F1-8F2709390451} = {59BE0A15-91F5-4A30-B233-A60012CFD9AA}
+		{8708813C-62B9-4635-B4D4-3C7292AF5654} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B98FCA19-0FA3-4446-BADE-02DE568D181F} = {4634DE47-4F8B-4CD7-8F55-85AF943EFE04}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7449609F-BEC3-4FA7-B739-1E6B89A94FD0}
