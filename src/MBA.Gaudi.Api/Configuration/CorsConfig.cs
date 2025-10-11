@@ -2,6 +2,11 @@
 {
     public static class CorsConfig
     {
+        /// <summary>
+        /// Adiciona a configuração de CORS ao <see cref="WebApplicationBuilder"/> especificado.
+        /// </summary>
+        /// <param name="builder">O <see cref="WebApplicationBuilder"/> a ser configurado.</param>
+        /// <returns>O <see cref="WebApplicationBuilder"/> configurado.</returns>
         public static WebApplicationBuilder AddCorsConfig(this WebApplicationBuilder builder)
         {
             builder.Services.AddCors(options =>

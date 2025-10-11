@@ -8,7 +8,7 @@ builder
     .AddApiConfig()
     .AddCorsConfig()
     .AddSwaggerConfig()
-    //AddDatabaseSelector()
+    //.AddDatabaseSelector()
     .AddIdentityConfig();
 
 var app = builder.Build();

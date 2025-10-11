@@ -3,15 +3,23 @@ using System.Reflection;
 
 namespace MBA.Gaudi.Api.Configuration
 {
+    /// <summary>
+    /// Classe estática responsável pela configuração do Swagger para a aplicação.
+    /// </summary>
     public static class SwaggerConfig
     {
+        /// <summary>
+        /// Adiciona a configuração do Swagger ao <see cref="WebApplicationBuilder"/> especificado.
+        /// </summary>
+        /// <param name="builder">O builder da aplicação web.</param>
+        /// <returns>O <see cref="WebApplicationBuilder"/> atualizado.</returns>
         public static WebApplicationBuilder AddSwaggerConfig(this WebApplicationBuilder builder)
         {
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(option =>
             {
                 option.SwaggerDoc("v1", new OpenApiInfo()
-                {
+                {   
                     Title = "API Gaudi",
                     Version = "v1",
                     Description = "Projeto MBA: API - Gaudi",
@@ -36,19 +44,19 @@ namespace MBA.Gaudi.Api.Configuration
                 });
 
                 option.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
                 {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
                         {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] {}
                         }
-                    },
-                    new string[] {}
-                }
-            });
+                });
 
             });
 
