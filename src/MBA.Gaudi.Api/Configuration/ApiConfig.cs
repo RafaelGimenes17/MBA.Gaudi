@@ -1,4 +1,6 @@
-﻿namespace MBA.Gaudi.Api.Configuration
+﻿using System.Text.Json.Serialization;
+
+namespace MBA.Gaudi.Api.Configuration
 {
     public static class ApiConfig
     {
@@ -10,10 +12,14 @@
         public static WebApplicationBuilder AddApiConfig(this WebApplicationBuilder builder)
         {
             builder.Services.AddControllers()
-                            .ConfigureApiBehaviorOptions(options =>
-                            {
-                                options.SuppressModelStateInvalidFilter = true;
-                            });
+                        .ConfigureApiBehaviorOptions(options =>
+                        {
+                            options.SuppressModelStateInvalidFilter = true;
+                        })
+                        .AddJsonOptions(options =>
+                        {
+                            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                        });
 
             return builder;
         }

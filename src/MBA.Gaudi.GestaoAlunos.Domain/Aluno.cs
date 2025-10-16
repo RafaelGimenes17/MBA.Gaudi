@@ -6,12 +6,12 @@ public class Aluno : Entity, IAggregateRoot
 {
     public Aluno() { }
 
-    public Aluno(Guid id, string nome, string email, HistoricoAprendizado historicoAprendizado)
+    public Aluno(Guid id, string nome, string email)
     {
         Id = id;
         Nome = nome;
         Email = email;
-        HistoricoAprendizado = historicoAprendizado;
+        HistoricoAprendizado = new HistoricoAprendizado();
         Ativo = true;
     }
 
@@ -29,6 +29,14 @@ public class Aluno : Entity, IAggregateRoot
     public void AtualizarHistorico(HistoricoAprendizado historico)
     {
         HistoricoAprendizado = historico;
+    }
+
+    public void AdicionarMatricula(Guid cursoId)
+    {
+        if (Matriculas == null)
+            Matriculas = new List<Matricula>();
+
+        Matriculas.Add(new Matricula(Id, cursoId, DateTime.Now));
     }
 
     #region Constants

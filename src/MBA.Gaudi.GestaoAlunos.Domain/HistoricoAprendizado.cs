@@ -8,15 +8,16 @@ namespace MBA.Gaudi.GestaoAlunos.Domain
 {
     public class HistoricoAprendizado
     {
-        public HistoricoAprendizado(Guid cursoId, Guid alunoId, DateTime dataAprendizado)
+        public HistoricoAprendizado() { }
+        public HistoricoAprendizado(Guid alunoId, Guid cursoId, DateTime dataAprendizado)
         {
-            CursoId = cursoId;
             AulaId = alunoId;
+            CursoId = cursoId;
             DataAprendizado = dataAprendizado;
         }
 
-        public Guid CursoId { get; private set; }
         public Guid AulaId { get; private set; }
+        public Guid CursoId { get; private set; }
         public DateTime DataAprendizado { get; private set; }
 
     }

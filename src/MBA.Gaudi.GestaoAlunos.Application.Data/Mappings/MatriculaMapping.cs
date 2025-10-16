@@ -11,6 +11,10 @@ namespace MBA.Gaudi.GestaoAlunos.Data.Mappings
             builder.ToTable("Matriculas");
             builder.HasKey(a => a.Id);
 
+            builder.Property(a => a.CursoId)
+                   .HasColumnName("CursoId")
+                   .IsRequired();
+
             builder.Property(a => a.DataMatricula)
                    .IsRequired();
 
