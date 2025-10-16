@@ -1,0 +1,20 @@
+using MBA.Gaudi.Core.Domain.Messages;
+
+namespace MBA.Gaudi.Core.Application.Events.Identity
+{
+    public class UsuarioCriadoEvent : Event
+    {
+        public Guid UsuarioId { get; private set; }
+        public string Nome { get; private set; }
+        public string Email { get; private set; }
+
+        public UsuarioCriadoEvent(Guid usuarioId, string nome, string email)
+        {
+            AggregateId = usuarioId;
+            UsuarioId = usuarioId;
+            Nome = nome;
+            Email = email;
+        }
+    }
+}
+

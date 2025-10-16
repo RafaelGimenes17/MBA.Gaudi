@@ -1,0 +1,307 @@
+using AutoMapper;
+using MBA.Gaudi.Vendas.Application.Commands;
+using MBA.Gaudi.Vendas.Application.Queries;
+using MBA.Gaudi.Alunos.Application.Interfaces;
+using MBA.Gaudi.Core.Application.DTOs;
+using MBA.Gaudi.Core.Domain.Enums;
+using MBA.Gaudi.Core.Domain.Interfaces.Identity;
+using MBA.Gaudi.Core.Domain.Interfaces.Mediator;
+using MBA.Gaudi.Core.Domain.Interfaces.Notifications;
+using MBA.Gaudi.Pagamentos.Domain.Interfaces.Repositories;
+using MBA.Gaudi.Vendas.Domain.Interfaces.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MBA.Gaudi.API.DTOs.Alunos;
+using MBA.Gaudi.API.DTOs.Pedido;
+using MBA.Gaudi.API.Controllers.Base;
+
+namespace MBA.Gaudi.API.Controllers
+{
+    [Authorize(Roles = nameof(TipoUsuario.Administrador) + "," + nameof(TipoUsuario.Aluno))]
+    [ApiController]
+    [Route("api/pedidos")]
+    public class PedidosController : MainController
+    {
+        private readonly IMediatorHandler _mediatorHandler;
+        private readonly IPedidoRepository _pedidoRepository;
+        private readonly IPagamentoRepository _pagamentoRepository;
+        private readonly IMatriculaService _matriculaService;
+        private readonly IMapper _mapper;
+
+        public PedidosController(
+            IMediatorHandler mediatorHandler,
+            INotificador notificador,
+            IUser appUser,
+            IPedidoRepository pedidoRepository,
+            IPagamentoRepository pagamentoRepository,
+            IMatriculaService matriculaService,
+            IMapper mapper)
+            : base(notificador, appUser)
+        {
+            _mediatorHandler = mediatorHandler;
+            _pedidoRepository = pedidoRepository;
+            _pagamentoRepository = pagamentoRepository;
+            _matriculaService = matriculaService;
+            _mapper = mapper;
+        }
+
+        [Authorize(Roles = nameof(TipoUsuario.Aluno))]
+        [HttpPost("adicionar-curso")]
+        [ProducesResponseType(typeof(ResultDto<Guid>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult> AdicionarCursoAoPedido([FromBody] AdicionarCursoPedidoDto adicionarCursoDto)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            if (!UsuarioAutenticado)
+            {
+                NotificarErro("Usuario", "Usuário não autenticado");
+                return Unauthorized();
+            }
+
+            // Obtém o ID do aluno do JWT
+            var alunoId = UsuarioId;
+
+            var command = new AdicionarCursoAoPedidoCommand(
+                alunoId,
+                adicionarCursoDto.CursoId
+            );
+
+
+
+            var resultado = await _mediatorHandler.EnviarComando(command);
+
+            if (!resultado)
+                return CustomResponse();
+
+            var response = ResultDto.Ok(command.PedidoId, "Curso adicionado ao pedido com sucesso.");
+            return CustomResponse(response);
+        }
+
+        [Authorize(Roles = nameof(TipoUsuario.Aluno))]
+        [HttpPost("pagamento")]
+        [ProducesResponseType(typeof(ResultDto<Guid>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult> ProcessarPagamentoPedido([FromBody] PagamentoPedidoDto pagamentoPedidoDto)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            if (!UsuarioAutenticado)
+            {
+                NotificarErro("Usuario", "Usuário não autenticado");
+                return Unauthorized();
+            }
+
+            // Obtém o ID do aluno do JWT
+            var alunoId = UsuarioId;
+
+            // Busca o pedido rascunho do aluno para verificar os cursos
+            var pedido = await _pedidoRepository.ObterPedidoRascunhoPorAlunoId(alunoId);
+            if (pedido == null)
+            {
+                NotificarErro("Pedido", "Pedido não encontrado para este aluno");
+                return CustomResponse();
+            }
+
+            if (!pedido.PossuiItens())
+            {
+                NotificarErro("Pedido", "Pedido não possui itens para pagamento");
+                return CustomResponse();
+            }
+
+            // Verifica se o aluno já está matriculado em algum dos cursos do pedido
+            var cursoIds = pedido.PedidoItens.Select(pi => pi.CursoId).ToList();
+            var verificacao = await _matriculaService.VerificarMatriculasParaPagamento(alunoId, cursoIds);
+
+            if (!verificacao.PodeProsseguir)
+            {
+                NotificarErro("Matricula", verificacao.MensagemErro);
+                return CustomResponse();
+            }
+
+            var command = new ProcessarPagamentoPedidoCommand(
+                alunoId,
+                pagamentoPedidoDto.NomeCartao,
+                pagamentoPedidoDto.NumeroCartao,
+                pagamentoPedidoDto.ExpiracaoCartao,
+                pagamentoPedidoDto.CvvCartao
+            );
+
+            var resultado = await _mediatorHandler.EnviarComando(command);
+
+            if (!resultado)
+                return CustomResponse();
+
+            var response = ResultDto.Ok(command.PedidoId, "Pagamento processado com sucesso. Aguarde a confirmação da matrícula.");
+            return CustomResponse(response);
+        }
+
+        [Authorize(Roles = nameof(TipoUsuario.Aluno))]
+        [HttpGet("meu-pedido")]
+        [ProducesResponseType(typeof(ResultDto<PedidoRascunhoDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult> ObterMeuPedidoRascunho()
+        {
+            if (!UsuarioAutenticado)
+            {
+                NotificarErro("Usuario", "Usuário não autenticado");
+                return Unauthorized();
+            }
+
+            // Obtém o ID do aluno do JWT
+            var alunoId = UsuarioId;
+
+            var query = new ObterPedidoRascunhoQuery(alunoId);
+            var pedido = await _mediatorHandler.EnviarComando(query);
+
+            if (pedido == null)
+            {
+                NotificarErro("Pedido", "Nenhum pedido rascunho encontrado para este aluno");
+                return CustomResponse();
+            }
+
+            // Usa AutoMapper para mapear Pedido -> PedidoRascunhoDto
+            var pedidoDto = _mapper.Map<PedidoRascunhoDto>(pedido);
+
+            var response = ResultDto.Ok(pedidoDto, "Pedido obtido com sucesso.");
+            return CustomResponse(response);
+        }
+
+        [Authorize(Roles = nameof(TipoUsuario.Aluno))]
+        [HttpDelete("remover-curso/{cursoId:guid}")]
+        [ProducesResponseType(typeof(ResultDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> RemoverCursoDoPedido(Guid cursoId)
+        {
+            if (!UsuarioAutenticado)
+            {
+                NotificarErro("Usuario", "Usuário não autenticado");
+                return Unauthorized();
+            }
+
+            // Obtém o ID do aluno do JWT
+            var alunoId = UsuarioId;
+
+            var command = new RemoverCursoDoPedidoCommand(alunoId, cursoId);
+
+            var resultado = await _mediatorHandler.EnviarComando(command);
+
+            if (!resultado)
+                return CustomResponse();
+
+            var response = ResultDto.Ok("Curso removido do pedido com sucesso.");
+            return CustomResponse(response);
+        }
+
+        [Authorize(Roles = nameof(TipoUsuario.Administrador))]
+        [HttpGet("admin/todos-pedidos")]
+        [ProducesResponseType(typeof(ResultDto<List<PedidoAdminDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult> ListarTodosPedidos()
+        {
+            if (!UsuarioAutenticado)
+            {
+                NotificarErro("Usuario", "Usuário não autenticado");
+                return Unauthorized();
+            }
+
+            // Busca todos os pedidos
+            var pedidos = await _pedidoRepository.ObterTodos();
+
+            if (pedidos == null || !pedidos.Any())
+            {
+                var responseVazio = ResultDto.Ok(new List<PedidoAdminDto>(), "Nenhum pedido encontrado.");
+                return CustomResponse(responseVazio);
+            }
+
+            // Mapeia para DTO
+            var pedidosDto = pedidos.Select(p => new PedidoAdminDto
+            {
+                Id = p.Id,
+                Codigo = p.Codigo,
+                AlunoId = p.AlunoId,
+                ValorTotal = p.ValorTotal,
+                DataCadastro = p.DataCadastro,
+                Status = p.PedidoStatus.ToString(),
+                QuantidadeItens = p.PedidoItens.Count,
+                Itens = p.PedidoItens.Select(i => new PedidoItemAdminDto
+                {
+                    Id = i.Id,
+                    CursoId = i.CursoId,
+                    CursoNome = i.CursoNome,
+                    Valor = i.Valor
+                }).ToList()
+            }).ToList();
+
+            var response = ResultDto.Ok(pedidosDto, $"{pedidosDto.Count} pedidos encontrados.");
+            return CustomResponse(response);
+        }
+
+        [Authorize(Roles = nameof(TipoUsuario.Administrador))]
+        [HttpGet("admin/todos-pagamentos")]
+        [ProducesResponseType(typeof(ResultDto<List<PagamentoAdminDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult> ListarTodosPagamentos()
+        {
+            if (!UsuarioAutenticado)
+            {
+                NotificarErro("Usuario", "Usuário não autenticado");
+                return Unauthorized();
+            }
+
+            // Busca todos os pagamentos
+            var pagamentos = await _pagamentoRepository.ObterTodos();
+
+            if (pagamentos == null || !pagamentos.Any())
+            {
+                var responseVazio = ResultDto.Ok(new List<PagamentoAdminDto>(), "Nenhum pagamento encontrado.");
+                return CustomResponse(responseVazio);
+            }
+
+            // Mapeia para DTO
+            var pagamentosDto = pagamentos.Select(p => new PagamentoAdminDto
+            {
+                Id = p.Id,
+                PedidoId = p.PedidoId,
+                Status = p.Status,
+                Valor = p.Valor,
+                NomeCartao = p.NomeCartao,
+                NumeroCartaoMascarado = MascararNumeroCartao(p.NumeroCartao),
+                Transacao = p.Transacao != null ? new TransacaoDto
+                {
+                    Id = p.Transacao.Id,
+                    PedidoId = p.Transacao.PedidoId,
+                    PagamentoId = p.Transacao.PagamentoId,
+                    Total = p.Transacao.Total,
+                    Status = p.Transacao.StatusTransacao.ToString(),
+                    DataTransacao = p.Transacao.DataTransacao
+                } : null
+            }).ToList();
+
+            var response = ResultDto.Ok(pagamentosDto, $"{pagamentosDto.Count} pagamentos encontrados.");
+            return CustomResponse(response);
+        }
+
+        private static string MascararNumeroCartao(string numeroCartao)
+        {
+            if (string.IsNullOrWhiteSpace(numeroCartao) || numeroCartao.Length < 4)
+                return "****";
+
+            return $"**** **** **** {numeroCartao.Substring(numeroCartao.Length - 4)}";
+        }
+    }
+}
+
