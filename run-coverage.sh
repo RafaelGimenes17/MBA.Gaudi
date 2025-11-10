@@ -7,7 +7,7 @@ echo "🧪 Executando testes com cobertura de código..."
 rm -rf TestResults
 
 # Executar testes com cobertura
-dotnet test MBA.Educacao.Online.sln --collect:"XPlat Code Coverage" --results-directory ./TestResults
+dotnet test MBA.Gaudi.sln --collect:"XPlat Code Coverage" --results-directory ./TestResults
 
 # Gerar relatório HTML
 echo ""

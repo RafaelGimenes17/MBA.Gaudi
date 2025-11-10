@@ -7,7 +7,7 @@ if (Test-Path "TestResults") {
 }
 
 # Executar testes com cobertura
-dotnet test MBA.Educacao.Online.sln --collect:"XPlat Code Coverage" --results-directory ./TestResults
+dotnet test MBA.Gaudi.sln --collect:"XPlat Code Coverage" --results-directory ./TestResults
 
 # Gerar relatório HTML
 Write-Host "`n📊 Gerando relatório de cobertura..." -ForegroundColor Cyan

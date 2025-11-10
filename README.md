@@ -1,139 +1,97 @@
-# **MBA Plataforma de Educação Online - Aplicação API RESTful**
+# **[MBA.Gaudi] - Plataforma de Ensino Online com API RESTful**
 
-## **1. Apresentação**
+## **1. Apresenta��o**
 
-Bem-vindo ao repositório do projeto **MBA Plataforma de Educação Online**. Este projeto é uma entrega do MBA DevXpert Full Stack .NET e é referente ao módulo **Arquitetura, Modelagem e Qualidade de Software**.
-O **MBA Educação Online** é uma plataforma completa de gerenciamento de cursos online desenvolvida em **ASP.NET Core 8.0** seguindo os princípios da **Clean Architecture**, **Domain-Driven Design (DDD)** e **SOLID**. O sistema permite o cadastro e gestão de cursos, matrículas de alunos, processamento de pagamentos e acompanhamento do progresso acadêmico.
+Bem-vindo ao reposit�rio do projeto **[MBA.Gaudi]**. Este projeto � uma entrega do MBA DevXpert Full Stack .NET e � referente ao m�dulo **Introdu��o ao Desenvolvimento ASP.NET Core**.
+O objetivo principal desenvolver uma aplica��o tipo plataforma de ensino online que permite aos usu�rios criar, editar, visualizar e excluir Cursos e Conte�do de Ensino, atrav�s de uma interface API RESTful.
+Descreva livremente mais detalhes do seu projeto aqui.
 
 ### **Autor(es)**
-- **Igor Guilherme Vettorello**
-
+- **Rafael Fernando Gimenes**
 
 ## **2. Proposta do Projeto**
 
 O projeto consiste em:
 
-- **API RESTful:** Exposição dos recursos do sistema para integração com outras aplicações ou desenvolvimento de front-ends alternativos.
-- **Autenticação e Autorização:** Implementação de controle de acesso. O sistema garante que apenas o Administradores e Alunos acessem o sistema.
-- **Acesso a Dados:** Implementação de acesso ao banco de dados através de ORM.
+- **API RESTful:** Exposi��o dos recursos de cadastros de Cursos e Conte�do e registro de Alunos e matriculas para integra��o com outras aplica��es ou desenvolvimento de front-ends alternativos.
+- **Autentica��o e Autoriza��o:** Implementa��o de controle de acesso, diferenciando administradores e usu�rios comuns.
+- **Acesso a Dados:** Implementa��o de acesso ao banco de dados atrav�s de ORM.
 
 ## **3. Tecnologias Utilizadas**
 
-- **Documentação da API:** Swagger
-- **Framework**: .NET 8.0
-- **ORM**: Entity Framework Core
-- **Database**: SQLite (dev)
-- **Auth**: ASP.NET Identity + JWT
-- **Patterns**: CQRS (MediatR), Repository, Unit of Work
-- **Validation**: FluentValidation
-- **Mapping**: AutoMapper
-- **Docs**: Swagger/OpenAPI
-- **Tests**: xUnit + Coverlet
-- **Monitoring**: Elmah.io
+- **Linguagem de Programa��o:** C#
+- **Frameworks:**
+  - ASP.NET Core Web API
+  - Entity Framework Core
+- **Banco de Dados:** SQL Server
+- **Autentica��o e Autoriza��o:**
+  - ASP.NET Core Identity
+  - JWT (JSON Web Token) para autentica��o na API
+- **Partners utilizado:**
+  - CQRS
+  - Mediator
+  - Unit of Work
+  - Event Sourcing
+  - Bounded Context
+- **Documenta��o da API:** Swagger
 
 ## **4. Estrutura do Projeto**
 
-A estrutura do projeto é organizada da seguinte forma:
-```
-mba.educacao.online/
-├── api/                    # Camada de apresentação (Controllers, DTOs)
-├── src/                    # Código fonte (5 bounded contexts)
-│   ├── Core/               # Infraestrutura compartilhada
-│   ├── Cursos/             # Bounded Context: Cursos
-│   ├── Vendas/             # Bounded Context: Pedidos
-│   ├── Pagamentos/         # Bounded Context: Transações
-│   └── Alunos/             # Bounded Context: Matrículas
-├── test/                   # Testes automatizados
-├── comandos/               # Documentação e collections Postman
-└── sqlite/
-```
+A estrutura do projeto � organizada da seguinte forma:
+
+
+- src/
+  
+- tests/
+  
+- README.md - Arquivo de Documenta��o do Projeto
+- FEEDBACK.md - Arquivo para Consolida��o dos Feedbacks
+- .gitignore - Arquivo de Ignora��o do Git
+
 ## **5. Funcionalidades Implementadas**
 
-- **CRUD para Cursos e Aulas:** Permite criar, editar, visualizar e excluir categorias e produtos.
-- **Autenticação e Autorização:** Rotina de criação de usuário vinculado com AspNetUser.
-- **API RESTful:** Exposição de endpoints para operações via API.
-- **Documentação da API:** Documentação automática dos endpoints da API utilizando Swagger.
-- **Camada src:** Onde ficam todas as regras de negócio do sistema
-
-### 5.1. **CQRS (Command Query Responsibility Segregation)**
-- Separação clara entre Commands (escrita) e Queries (leitura)
-- Handlers dedicados para cada operação
-- Exemplo: `CriarCursoCommand` → `CriarCursoCommandHandler`
-
-### 5.2. **Repository Pattern**
-- Abstrações de acesso a dados via interfaces
-- Implementações concretas na camada de Data
-- Unit of Work para transações
-
-### 5.3. **Mediator Pattern**
-- MediatR para desacoplamento entre camadas
-- Comunicação via commands e events
-- Handlers registrados via Dependency Injection
-
-### 5.4. **Domain Events**
-- Eventos de domínio para comunicação entre bounded contexts
-- Eventos de integração:
-  - `PagamentoRealizadoEvent`
-  - `MatriculaConfirmadaEvent`
-  - `EfetuarMatriculaEvent`
-  - `AtualizarPedidoItemMatriculaEvent`
-
-### 5.5. **Anti-Corruption Layer**
-- Isolamento de dependências externas (gateway de pagamento)
-- Camada de tradução entre modelos externos e domínio interno
-
-### 5.6. **Validator Pattern**
-- FluentValidation para validações complexas
-- Validators dedicados para cada Command
+- **CRUD para Posts e Coment�rios:** Permite criar, editar, visualizar e excluir posts e coment�rios.
+- **Autentica��o e Autoriza��o:** Diferencia��o entre usu�rios comuns e administradores.
+- **API RESTful:** Exposi��o de endpoints para opera��es CRUD via API.
+- **Documenta��o da API:** Documenta��o autom�tica dos endpoints da API utilizando Swagger.
 
 ## **6. Como Executar o Projeto**
 
-### **Pré-requisitos**
+### **Pr�-requisitos**
 
 - .NET SDK 8.0 ou superior
 - SQL Server
-- SQLite
-- Visual Studio 2022 ou superior (ou qualquer IDE de sua preferência)
+- Visual Studio 2022 ou superior (ou qualquer IDE de sua prefer�ncia)
 - Git
 
-### **Passos para Execução**
+### **Passos para Execu��o**
 
-1. **Clone o Repositório:**
-   - `git clone https://github.com/igorguilhermevettorello/mba.educacao.online.git`
-   - `cd mba.educacao.online`
+1. **Clone o Reposit�rio:**
+   - `git clone https://github.com/RafaelGimenes17/MBA.Gaudi`
+   - `cd MBA.Gaudi`
 
-2. **Configuração do Banco de Dados:**
-   - No arquivo `appsettings.json`, configure a string de conexão do SQLite e SQL Server.
-   - Rode o projeto para que a configuração do Seed crie o banco e popule com os dados básicos
+2. **Configura��o do Banco de Dados:**
+   - No arquivo `appsettings.json`, configure a string de conex�o do SQL Server.
+   - Rode o projeto para que a configura��o do Seed crie o banco e popule com os dados b�sicos
 
-3. **Executar a Aplicação:**
-   - `cd mba.educacao.online`
-   - `dotnet build`
-   - `cd api/MBA.Educacao.Online.API`
+3. **Executar a API:**
+   - `cd src\MBA.Gaudi.Api`
    - `dotnet run`
-   - Acesse a aplicação em: http://localhost:5042/swagger/index.html
+   - Acesse a documenta��o da API em: https://localhost:7072/swagger/index.html
 
-4. **Auxiliares**
-   - Dentro da pasta auxiliar existem 2 arquivos
-   - o arquivo `queries.sql` contém algumas consulta para auxiliar no entendimento da estrutura do banco de dados.
-   - o arquivo `MBA.Educao.Online.postman_collection.json` contém as chamadas dos endpoints com configurações de variáveis de ambiente
+## **7. Instru��es de Configura��o**
 
-<img width="1451" height="562" alt="image" src="https://github.com/user-attachments/assets/4d5e15a3-aad0-4f68-8c34-662cf1df44be" />
+- **JWT para API:** As chaves de configura��o do JWT est�o no `appsettings.json`.
+- **Migra��es do Banco de Dados:** As migra��es s�o gerenciadas pelo Entity Framework Core. N�o � necess�rio aplicar devido a configura��o do Seed de dados.
 
+## **8. Documenta��o da API**
 
-## **7. Instruções de Configuração**
+A documenta��o da API est� dispon�vel atrav�s do Swagger. Ap�s iniciar a API, acesse a documenta��o em:
 
-- **JWT para API:** As chaves de configuração do JWT estão no `appsettings.json`.
-- **Migrações do Banco de Dados:** As migrações são gerenciadas pelo Entity Framework Core. Não é necessário aplicar devido a configuração do Seed de dados.
+https://localhost:7072/swagger/index.html
 
-## **8. Documentação da API**
+## **9. Avalia��o**
 
-A documentação da API está disponível através do Swagger. Após iniciar a API, acesse a documentação em:
-
-https://localhost:5042/swagger/index.html
-
-## **9. Avaliação**
-
-- Este projeto é parte de um curso acadêmico e não aceita contribuições externas.
-- Para feedbacks ou dúvidas utilize o recurso de Issues
-- O arquivo `FEEDBACK.md` é um resumo das avaliações do instrutor e deverá ser modificado apenas por ele.
+- Este projeto � parte de um curso acad�mico e n�o aceita contribui��es externas. 
+- Para feedbacks ou d�vidas utilize o recurso de Issues
+- O arquivo `FEEDBACK.md` � um resumo das avalia��es do instrutor e dever� ser modificado apenas por ele.

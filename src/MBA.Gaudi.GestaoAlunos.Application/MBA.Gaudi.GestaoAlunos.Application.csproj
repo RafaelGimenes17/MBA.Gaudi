@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Handlers\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MBA.Gaudi.Core\MBA.Gaudi.Core.csproj" />
+    <ProjectReference Include="..\MBA.Gaudi.GestaoAlunos.Domain\MBA.Gaudi.GestaoAlunos.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
