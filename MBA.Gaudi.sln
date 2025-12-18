@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBA.Gaudi.Vendas.Test", "te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBA.Gaudi.Pagamentos.Application", "src\Pagamentos\MBA.Gaudi.Pagamentos.Application\MBA.Gaudi.Pagamentos.Application.csproj", "{619A5D4B-D9AD-A1F4-0CA6-9E5604ACAD55}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBA.Gaudi.API.Test", "test\Api\MBA.Gaudi.API.Test\MBA.Gaudi.API.Test.csproj", "{7F882DC2-61CF-4FF9-B810-ED1ED4CD33CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +151,10 @@ Global
 		{619A5D4B-D9AD-A1F4-0CA6-9E5604ACAD55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{619A5D4B-D9AD-A1F4-0CA6-9E5604ACAD55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{619A5D4B-D9AD-A1F4-0CA6-9E5604ACAD55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F882DC2-61CF-4FF9-B810-ED1ED4CD33CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F882DC2-61CF-4FF9-B810-ED1ED4CD33CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F882DC2-61CF-4FF9-B810-ED1ED4CD33CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F882DC2-61CF-4FF9-B810-ED1ED4CD33CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -180,6 +186,7 @@ Global
 		{ECBFF98E-17EE-19B6-93B3-577BF9A61254} = {CD9223C4-8010-40E0-8A01-6C720D3EE169}
 		{B2289989-4221-186D-6869-C6ED7381015E} = {CD9223C4-8010-40E0-8A01-6C720D3EE169}
 		{619A5D4B-D9AD-A1F4-0CA6-9E5604ACAD55} = {701EB9E9-0F40-4C3B-BE30-97F8A4B98E63}
+		{7F882DC2-61CF-4FF9-B810-ED1ED4CD33CF} = {A54DE412-1D26-4296-93C8-9C1F5FA2B8BA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38ADCE19-E311-4B09-A1B9-11011B9C85C7}
