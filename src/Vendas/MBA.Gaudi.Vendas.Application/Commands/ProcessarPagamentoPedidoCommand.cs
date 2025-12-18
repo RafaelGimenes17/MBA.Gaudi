@@ -22,6 +22,11 @@ namespace MBA.Gaudi.Vendas.Application.Commands
             CvvCartao = cvvCartao;
         }
 
+        public ProcessarPagamentoPedidoCommand(Guid pedidoId)
+        {
+            PedidoId = pedidoId;
+        }
+
         public override bool IsValid()
         {
             ValidationResult = new ProcessarPagamentoPedidoCommandValidator().Validate(this);

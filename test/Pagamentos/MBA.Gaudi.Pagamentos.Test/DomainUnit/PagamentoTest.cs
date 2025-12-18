@@ -1,5 +1,6 @@
 using FluentAssertions;
 using MBA.Gaudi.Pagamentos.Domain.Entities;
+using MBA.Gaudi.Pagamentos.Domain.Enums;
 
 namespace MBA.Educacao.Online.Pagamentos.Test.DomainUnit
 {

@@ -17,6 +17,8 @@ namespace MBA.Gaudi.Vendas.Application.Handlers.Commands
         private readonly IMediatorHandler _mediatorHandler;
         private readonly INotificador _notificador;
         private readonly IPagamentoService _pagamentoService;
+        private IPedidoRepository object1;
+        private INotificador object2;
 
         public ProcessarPagamentoPedidoCommandHandler(
             IPedidoRepository pedidoRepository,
@@ -28,6 +30,12 @@ namespace MBA.Gaudi.Vendas.Application.Handlers.Commands
             _mediatorHandler = mediatorHandler;
             _notificador = notificador;
             _pagamentoService = pagamentoService;
+        }
+
+        public ProcessarPagamentoPedidoCommandHandler(IPedidoRepository object1, INotificador object2)
+        {
+            this.object1 = object1;
+            this.object2 = object2;
         }
 
         public async Task<bool> Handle(ProcessarPagamentoPedidoCommand request, CancellationToken cancellationToken)
