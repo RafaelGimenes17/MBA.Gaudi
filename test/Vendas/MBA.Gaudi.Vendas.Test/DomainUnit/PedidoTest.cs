@@ -4,7 +4,7 @@ using MBA.Gaudi.Vendas.Domain.Enums;
 
 namespace MBA.Gaudi.Vendas.Test.DomainUnit
 {
-    public class PedidoTest
+    public class PedidoTest 
     {
         #region 1. Criar Pedido
 
